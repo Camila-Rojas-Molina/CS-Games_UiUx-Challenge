@@ -22,7 +22,7 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true,
     preserveDrawingBuffer: true // For screenshots
 });
-renderer.setSize(window.innerWidth - 380, window.innerHeight);
+renderer.setSize(window.innerWidth - 320, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 
@@ -231,10 +231,6 @@ function updateModelInfo() {
     document.getElementById('info-materials').textContent = modelInfo.materials;
     document.getElementById('info-dimensions').textContent = 
         `${modelInfo.dimensions.x.toFixed(2)} × ${modelInfo.dimensions.y.toFixed(2)} × ${modelInfo.dimensions.z.toFixed(2)}`;
-    
-    // Update floating stats panel
-    document.getElementById('float-triangles').textContent = Math.floor(modelInfo.triangles).toLocaleString();
-    document.getElementById('stats-float').classList.remove('hidden');
 }
 
 function calculatePerformance() {
@@ -281,11 +277,6 @@ function calculatePerformance() {
     document.getElementById('perf-filesize').textContent = fileSizeMB + ' MB';
     document.getElementById('perf-texmem').textContent = (fileSizeMB * 1.5).toFixed(2) + ' MB';
     document.getElementById('perf-triangles').textContent = triangles.toLocaleString();
-    
-    // Update floating stats
-    document.getElementById('float-size').textContent = fileSizeMB + ' MB';
-    let perfText = score >= 80 ? '🟢 Good' : score >= 55 ? '🟡 Moderate' : '🔴 Poor';
-    document.getElementById('float-perf').textContent = perfText;
     
     // Optimization tips
     let tip = '💡 ';
@@ -482,7 +473,7 @@ document.getElementById('screenshot-btn').addEventListener('click', () => {
 
 // ========== RESIZE ==========
 window.addEventListener('resize', () => {
-    const width = window.innerWidth - 380;
+    const width = window.innerWidth - 320;
     const height = window.innerHeight;
     
     camera.aspect = width / height;
