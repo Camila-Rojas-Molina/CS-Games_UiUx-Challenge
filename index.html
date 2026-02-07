@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer - UX/UI Challenge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +15,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #1a1a1a;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
             color: #e0e0e0;
             overflow: hidden;
         }
@@ -25,11 +28,12 @@
 
         /* Sidebar */
         #sidebar {
-            width: 320px;
-            background: #2a2a2a;
+            width: 380px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16162a 100%);
             overflow-y: auto;
-            padding: 20px;
-            border-right: 1px solid #3a3a3a;
+            padding: 25px;
+            border-right: 2px solid #2a2a4a;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
         }
 
         /* 3D Viewport */
@@ -43,20 +47,34 @@
             width: 100%;
             height: 100%;
             display: block;
+        }linear-gradient(135deg, rgba(42, 42, 74, 0.6) 0%, rgba(30, 30, 50, 0.8) 100%);
+            border: 1px solid rgba(100, 100, 200, 0.3);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        /* Panel Styles */
-        .panel {
-            background: #333;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+        .panel:hover {
+            border-color: rgba(100, 150, 255, 0.5);
+            box-shadow: 0 8px 40px rgba(100, 150, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .panel-title {
-            font-size: 14px;
-            font-weight: 600;
+            font-family: 'Orbitron', monospace;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, #00d4ff 0%, #0078d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
             margin-bottom: 12px;
             color: #fff;
             text-transform: uppercase;
@@ -65,51 +83,94 @@
 
         /* Upload Area */
         #upload-zone {
-            border: 2px dashed #555;
-            border-radius: 8px;
-            padding: 30px;
+            border: 3px dashed rgba(104, 186, 160, 0.5);
+            border-radius: 12px;
+            padding: 35px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
-            background: #2a2a2a;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.8) 0%, rgba(30, 30, 50, 0.6) 100%);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #upload-zone::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(104, 186, 160, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        #upload-zone:hover::before {
+            transform: translateX(100%);
         }
 
         #upload-zone:hover {
-            border-color: #0078d4;
-            background: #333;
+            border-color: #68baa0;
+            background: linear-gradient(135deg, rgba(104, 186, 160, 0.2) 0%, rgba(35, 89, 72, 0.3) 100%);
+            box-shadow: 0 0 30px rgba(104, 186, 160, 0.3);
+            transform: translateY(-2px);
         }
 
         #upload-zone.dragover {
-            border-color: #0078d4;
-            background: #1a3a5a;
+            border-color: #68baa0;
+            background: linear-gradient(135deg, rgba(104, 186, 160, 0.3) 0%, rgba(35, 89, 72, 0.4) 100%);
+            box-shadow: 0 0 40px rgba(104, 186, 160, 0.5);
         }
 
         .upload-text {
-            font-size: 12px;
-            color: #999;
-            margin-top: 8px;
+            font-size: 13px;
+            color: #aaa;
+            margin-top: 10px;
+            font-weight: 400;
         }
 
         /* Button */
         .btn {
-            background: #0078d4;
+            background: linear-gradient(135deg, #68baa0 0%, #235948 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 11px 22px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
             font-weight: 600;
-            transition: background 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(104, 186, 160, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #8dd4bb 0%, #68baa0 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover::before {
+            opacity: 1;
         }
 
         .btn:hover {
-            background: #005a9e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(104, 186, 160, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
 
         .btn-small {
-            padding: 6px 12px;
-            font-size: 11px;
+            padding: 8px 14px;
+            font-size: 12px;
         }
 
         /* Progress Bar */
@@ -128,9 +189,10 @@
 
         #progress-fill {
             height: 100%;
-            background: #0078d4;
+            background: linear-gradient(90deg, #68baa0 0%, #8dd4bb 100%);
             width: 0%;
             transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(104, 186, 160, 0.6);
         }
 
         #progress-text {
@@ -218,13 +280,14 @@
         }
 
         .mode-btn:hover {
-            border-color: #0078d4;
+            border-color: #68baa0;
         }
 
         .mode-btn.active {
-            background: #0078d4;
-            border-color: #0078d4;
+            background: linear-gradient(135deg, #68baa0 0%, #235948 100%);
+            border-color: #68baa0;
             color: white;
+            box-shadow: 0 4px 15px rgba(104, 186, 160, 0.4);
         }
 
         /* Controls */
@@ -299,18 +362,77 @@
             cursor: pointer;
         }
 
+        /* Floating Panels */
+        .floating-panel {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(20, 20, 35, 0.95) 100%);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 212, 255, 0.1);
+            z-index: 100;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .floating-panel:hover {
+            border-color: rgba(100, 150, 255, 0.6);
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .floating-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        #stats-float {
+            top: 20px;
+            right: 20px;
+            min-width: 200px;
+        }
+
+        #controls-float {
+            bottom: 20px;
+            right: 20px;
+            min-width: 250px;
+        }
+
         /* Top Toolbar */
         #toolbar {
             position: absolute;
             top: 20px;
-            right: 20px;
+            right: 240px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             z-index: 10;
         }
 
         .hidden {
             display: none !important;
+        }
+
+        /* Scrollbar styling */
+        #sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #sidebar::-webkit-scrollbar-track {
+            background: rgba(20, 20, 30, 0.5);
+        }
+
+        #sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0078d4 0%, #00d4ff 100%);
+            border-radius: 10px;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #00d4ff 0%, #00ff88 100%);
         }
     </style>
 </head>
@@ -320,7 +442,7 @@
         <div id="sidebar">
             <!-- Upload Panel -->
             <div class="panel">
-                <div class="panel-title">📁 Model Upload</div>
+                <div class="panel-title">Model Upload</div>
                 <div id="upload-zone">
                     <div>🎯 Drop model here or click to browse</div>
                     <div class="upload-text">Supports .glb, .gltf, .obj, .fbx</div>
@@ -336,7 +458,7 @@
 
             <!-- Model Info Panel -->
             <div class="panel hidden" id="info-panel">
-                <div class="panel-title">📊 Model Info</div>
+                <div class="panel-title"> Model Info</div>
                 <div class="info-grid">
                     <div class="info-item">
                         <div class="info-label">Vertices</div>
@@ -375,12 +497,12 @@
                 <div class="perf-metric">
                     <strong>Triangle Count:</strong> <span id="perf-triangles">-</span>
                 </div>
-                <div class="perf-tip" id="perf-tip">💡 Load a model to see optimization tips</div>
+                <div class="perf-tip" id="perf-tip">Load a model to see optimization tips</div>
             </div>
 
             <!-- Render Modes Panel -->
             <div class="panel">
-                <div class="panel-title">🎨 Render Mode</div>
+                <div class="panel-title">Render Mode</div>
                 <div class="mode-grid">
                     <button class="mode-btn active" data-mode="default">Default PBR</button>
                     <button class="mode-btn" data-mode="wireframe">Wireframe</button>
@@ -392,7 +514,7 @@
 
             <!-- Lighting Panel -->
             <div class="panel">
-                <div class="panel-title">💡 Lighting</div>
+                <div class="panel-title">Lighting</div>
                 <div class="control-group">
                     <label class="control-label">Main Light Intensity</label>
                     <div class="slider-container">
@@ -425,7 +547,7 @@
 
             <!-- Camera Panel -->
             <div class="panel">
-                <div class="panel-title">📷 Camera Presets</div>
+                <div class="panel-title">Camera Presets</div>
                 <div class="camera-grid">
                     <button class="btn btn-small" data-preset="front">Front View</button>
                     <button class="btn btn-small" data-preset="side">Side View</button>
@@ -451,6 +573,33 @@
         <!-- 3D Viewport -->
         <div id="viewport-container">
             <canvas id="canvas"></canvas>
+            
+            <!-- Floating Stats Panel -->
+            <div class="floating-panel hidden" id="stats-float">
+                <div class="floating-title">⚡ Quick Stats</div>
+                <div style="font-size: 12px; color: #ccc;">
+                    <div style="margin-bottom: 8px;">
+                        <strong style="color: #68baa0;">Triangles:</strong> <span id="float-triangles">-</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <strong style="color: #68baa0;">Performance:</strong> <span id="float-perf">-</span>
+                    </div>
+                    <div>
+                        <strong style="color: #68baa0;">File Size:</strong> <span id="float-size">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Controls Panel -->
+            <div class="floating-panel" id="controls-float">
+                <div class="floating-title">🎮 Quick Controls</div>
+                <div style="font-size: 11px; color: #aaa; line-height: 1.6;">
+                    <div><strong style="color: #68baa0;">Rotate:</strong> Left-click + drag</div>
+                    <div><strong style="color: #68baa0;">Pan:</strong> Right-click + drag</div>
+                    <div><strong style="color: #68baa0;">Zoom:</strong> Scroll wheel</div>
+                </div>
+            </div>
+            
             <div id="toolbar">
                 <button class="btn" id="screenshot-btn">📸 Screenshot</button>
             </div>
